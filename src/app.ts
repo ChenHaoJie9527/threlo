@@ -1,15 +1,16 @@
 import configs from "./configs";
-import Koa from "koa";
-import { config } from "process";
+import Koa, { Context } from "koa";
 import KoaRouter from "koa-router";
 import path from "path";
+import KoaBody from "koa-body";
+import Boom from "@hapi/boom";
 /**
  * 关于路由处理，可以选择基于koa的koa-router进行集中式管理，也可以采用ts装饰器中的koa-ts-controllers
  * 该装饰器可以直接在指定类的某个方法中对其路由进行绑定，通过它提供的功能，可以更方便就能实现RESTful规范的接口
  * bootstrapControllers： 注册路由
  * 
  */
-import { bootstrapControllers } from "koa-ts-controllers";
+import { bootstrapControllers, Ctx } from "koa-ts-controllers";
 
 
 //注册路由，接受两个参数 app params配置选项
@@ -19,6 +20,9 @@ import { bootstrapControllers } from "koa-ts-controllers";
     const router = new KoaRouter();
 
     const app = new Koa();
+    app.use(KoaBody({
+        multipart: true
+    }))
     // 会将router回调函数进行类管理，通过类来实现接口
     await bootstrapControllers(app, {
         router, // 路由器
@@ -26,9 +30,35 @@ import { bootstrapControllers } from "koa-ts-controllers";
         versions: [1], // /v1
         controllers: [
             path.resolve(__dirname, "controllers/**/*.ts") //加载的文件夹中的所有ts文件
-        ]
+        ],
+        // 捕获错误，并输出到前端
+        //  ctx: Context属于Koa的Context
+        errorHandler: async (err: any, ctx: Context) => {
+            console.log(err)
+            // 响应服务器错误
+            let status = 500;
+            let body: any = {
+                "statusCode": status,
+                "error": "Internal Server error",
+                "message": "An internal server error occurred"
+            };
+            // 响应验证错误
+            if (err.output) {
+                status = err.output.statusCode;
+                body = {
+                    ...err.output.payload
+                }
+                if (err.data) {
+                    body.errorData = err.data;
+                }
+            }
+            ctx.status = status;
+            ctx.body = body;
+        }
     })
-
+    // router.all("*", async ctx=>{
+    //     throw Boom.notFound("没有该路由")
+    // })
     app.use(router.routes());
 
     app.listen(configs.server.port, configs.server.host, () => {
