@@ -5,7 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev ./src/app.ts"
+    "dev": "ts-node-dev ./src/app.ts",
+    "db:create": "sequelize db:create",
+    "db:drop": "sequelize db:drop",
+    "db:migrate": "sequelize db:migrate",
+    "db:migrate:undo": "sequelize db:migrate:undo",
+    "db:db:migrate:undo:all": "sequelize db:migrate:undo:all",
+    "db:seed:all": "sequelize db:seed:all",
+    "db:seed:undo:all": "sequelize db:seed:undo:all",
+    "db:init": "npm run db:create && npm run db:migrate && npm run db:seed:all",
+    "db:redo": "npm run db:drop && npm run db:init"
   },
   "repository": {
     "type": "git",
@@ -19,6 +28,7 @@
   },
   "homepage": "https://github.com/ChenHaoJie9527/threlo#readme",
   "devDependencies": {
+    "@types/jquery": "^3.5.1",
     "@types/koa": "^2.11.3",
     "@types/koa-router": "^7.4.1",
     "@types/node": "^14.0.27",
@@ -27,10 +37,15 @@
     "koa-router": "^9.1.0",
     "koa-static": "^5.0.0",
     "koa-ts-controllers": "^2.1.0",
+    "sequelize-cli": "^5.5.1",
+    "sequelize-typescript": "^1.1.0",
     "ts-node-dev": "^1.0.0-pre.56",
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "class-validator": "^0.12.2"
+    "class-validator": "^0.12.2",
+    "jquery": "^3.5.1",
+    "mysql2": "^2.1.0",
+    "sequelize": "^5.21.5"
   }
 }

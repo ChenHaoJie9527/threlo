@@ -1,0 +1,26 @@
+{
+    "development": {
+        "host": "127.0.0.1",
+        "dialect": "mysql",
+        "username": "root",
+        "password": "chj_12580",
+        "database": "trello_app_development",
+        "timezome": ""
+    },
+    "test": {
+        "host":"127.0.0.1",
+        "dialect":"mysql",
+        "username":"root",
+        "password":"chj_12580",
+        "database": "trello_app_test",
+        "timezome": ""
+    },
+    "production": {
+        "host":"127.0.0.1",
+        "dialect":"mysql",
+        "username":"root",
+        "password":"chj_12580",
+        "database": "trello_app_production",
+        "timezome": ""
+    }
+}

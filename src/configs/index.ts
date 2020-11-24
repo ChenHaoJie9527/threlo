@@ -1,27 +1,35 @@
-import { type } from "os";
-import { types } from "util";
-
 /**
  * 定义配置对象
  */
+import DataBase from "./database.json";
+interface IDatabaseConfig {
+    username: string,
+    password: string,
+    host: string,
+    dialect: 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'mariadb',
+    timezome: string
+}
 const configs = {
     development: {
         server: {
             host: "localhost",
-            port: 8080
-        }
+            port: 8080,
+        },
+        database: DataBase.development as IDatabaseConfig
     },
     tset: {
         server: {
             host: "localhost",
-            port: 8080
-        }
+            port: 8080,
+        },
+        database: DataBase.test as IDatabaseConfig
     },
     production: {
         server: {
             host: "localhost",
-            port: 8080
-        }
+            port: 8080,
+        },
+        database: DataBase.production as IDatabaseConfig
     }
 }
 

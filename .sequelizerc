@@ -1,0 +1,11 @@
+// sequelize配置文件
+// 当运行sequelize-cli工具时，会去加载这段JS脚本
+const path = require("path");
+module.exports = {
+    "env": "development", //当前环境
+    "config": path.resolve("src","configs/database.json"), // 数据库的配置文件
+    "migrations-path":path.resolve("src","database/migrations"), // 迁移脚本存放目录
+    "seeders-path": path.resolve("src","database/seeders"), // 种子文件存放目录
+    "models-path": path.resolve("src","database/models"), // 模型文件存放目录
+    "debug": true //开启debug模式
+}
